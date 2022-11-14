@@ -1,14 +1,17 @@
 package stewart.jonathan.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import stewart.jonathan.model.Speaker;
 import stewart.jonathan.repository.HibernateSpeakerRepositoryImpl;
 import stewart.jonathan.repository.SpeakerRepository;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service("speakerService")
+//@Profile("dev")
 public class SpeakerServiceImpl implements SpeakerService {
 
     private SpeakerRepository repository;
@@ -22,7 +25,11 @@ public class SpeakerServiceImpl implements SpeakerService {
         repository = speakerRepository;
     }
 
-    @Override
+    @PostConstruct
+    private void initialize() {
+        System.out.println("We;re called after constructors");
+    }
+
     public List<Speaker> findAll() {
         return repository.findAll();
     }

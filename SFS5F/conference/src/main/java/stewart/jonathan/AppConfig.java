@@ -9,12 +9,27 @@ import stewart.jonathan.repository.HibernateSpeakerRepositoryImpl;
 import stewart.jonathan.repository.SpeakerRepository;
 import stewart.jonathan.service.SpeakerService;
 import stewart.jonathan.service.SpeakerServiceImpl;
+import stewart.jonathan.util.CalendarFactory;
 
 import java.beans.BeanDescriptor;
+import java.util.Calendar;
 
 @Configuration
 @ComponentScan({"stewart.jonathan"})
 public class AppConfig {
+
+    @Bean(name = "cal")
+    public CalendarFactory calFactory() {
+        CalendarFactory factory = new CalendarFactory();
+        factory.addDays(2);
+        return factory;
+    }
+
+        @Bean
+        public Calendar cal() throws Exception{
+            return calFactory().getObject();
+        }
+    }
 
     /*
     @Bean(name = "speakerService")
@@ -32,4 +47,4 @@ public class AppConfig {
     }
 
      */
-}
+
