@@ -6,6 +6,7 @@ import stewart.jonathan.pokemon.model.Pokemon;
 import stewart.jonathan.pokemon.repository.PokemonRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class PokemonService {
@@ -21,7 +22,7 @@ public class PokemonService {
         return pokemonRepository.findAll();
     }
 
-    public Pokemon getById(Integer id) {
+    public Pokemon getById(String id) {
         return getAll().stream()
                 .filter(p -> id.equals(p.getId()))
                 .findFirst()
@@ -29,18 +30,19 @@ public class PokemonService {
     }
 
     public String deleteById(String id) {
-        Pokemon entity = getById(Integer.valueOf(id));
-        pokemonRepository.deleteById(Integer.valueOf(id));
+        Pokemon entity = getById(id);
+        pokemonRepository.deleteById(id);
         return entity.toString() + " was removed from your collection";
     }
 
     public String add(Pokemon pokemon) {
+        pokemon.setId(UUID.randomUUID().toString());
         pokemonRepository.save(pokemon);
         return pokemon.toString() + " was added to your collection.";
     }
 
     public String patch(String id, Pokemon pokemon) {
-        Pokemon entity = getById(Integer.valueOf(id));
+        Pokemon entity = getById(id);
         entity.setName(pokemon.getName());
         entity.setType(pokemon.getType());
         pokemonRepository.save(entity);

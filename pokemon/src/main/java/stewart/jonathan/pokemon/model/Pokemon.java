@@ -1,6 +1,9 @@
 package stewart.jonathan.pokemon.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
+import java.util.UUID;
 
 
 @Entity(name = "Pokemon")
@@ -8,21 +11,20 @@ import javax.persistence.*;
 public class Pokemon {
 
     @Id
-    @SequenceGenerator(name = "pokemon_sequence", sequenceName = "pokemon_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pokemon_sequence")
-    private Integer id;
+    private String id;
     private String name;
     private String type;
 
     public Pokemon () {}
 
-    public Pokemon(String name, String type) {
+    public Pokemon(String id, String name, String type) {
+        this.id = id;
         this.name = name;
         this.type = type;
     }
 
-    public Integer getId() {
-        return id;
+    public String getId() {
+        return id.toString();
     }
 
     public String getName() {
@@ -33,7 +35,7 @@ public class Pokemon {
         return type;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

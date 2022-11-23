@@ -24,7 +24,7 @@ public class PokemonController {
     }
 
     @GetMapping("/{id}")
-    public Pokemon getById(@PathVariable Integer id) {
+    public Pokemon getById(@PathVariable String id) {
         return pokemonService.getById(id);
     }
 
