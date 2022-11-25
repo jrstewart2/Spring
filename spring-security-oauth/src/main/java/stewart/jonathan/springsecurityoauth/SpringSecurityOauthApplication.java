@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringSecurityOauthApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(SpringSecurityOauthApplication.class, args);
 	}
 

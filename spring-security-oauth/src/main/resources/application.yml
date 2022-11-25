@@ -1,2 +1,12 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          facebook:
+            client-id: 3421861474794311
+            client-secret: 310fbc7dbd560543e973765efb45611e
+
+
 server:
   port: 8080
