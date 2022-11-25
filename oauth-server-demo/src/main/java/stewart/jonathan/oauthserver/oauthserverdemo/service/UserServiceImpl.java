@@ -2,9 +2,11 @@ package stewart.jonathan.oauthserver.oauthserverdemo.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import stewart.jonathan.oauthserver.oauthserverdemo.model.AppUser;
 import stewart.jonathan.oauthserver.oauthserverdemo.model.Role;
@@ -12,13 +14,19 @@ import stewart.jonathan.oauthserver.oauthserverdemo.repo.AppUserRepo;
 import stewart.jonathan.oauthserver.oauthserverdemo.repo.RoleRepo;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-@Service@RequiredArgsConstructor @Transactional @Slf4j
+@Service
+@RequiredArgsConstructor
+@Transactional
+@Slf4j
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final AppUserRepo userRepo;
     private final RoleRepo roleRepo;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -29,13 +37,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         } else {
             log.info("User found in database: {}", username);
         }
-        Collection
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        appUser.getRoles().forEach(role ->
+        {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        });
         return new org.springframework.security.core.userdetails.User(appUser.getUsername(), appUser.getPassword(), authorities);
     }
 
     @Override
     public AppUser saveUser(AppUser appUser) {
         log.info("Saving new user {} to DB", appUser.getName());
+        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         return userRepo.save(appUser);
     }
 
